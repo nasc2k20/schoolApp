@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SchoolModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Course">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="CourseGrade">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="GradeId" Type="int" Nullable="false" />
+    <Property Name="CourseId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Grade">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="Student">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="StudentCode" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="300" Nullable="false" />
+    <Property Name="BirthDate" Type="datetime" Nullable="false" />
+    <Property Name="Gender" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="GradeId" Type="int" Nullable="false" />
+    <Property Name="Comments" Type="varchar" MaxLength="300" />
+  </EntityType>
+  <Association Name="fk_CourseCourseGrade">
+    <End Role="Course" Type="Self.Course" Multiplicity="1" />
+    <End Role="CourseGrade" Type="Self.CourseGrade" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Course">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CourseGrade">
+        <PropertyRef Name="CourseId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_GradeCourseGrade">
+    <End Role="Grade" Type="Self.Grade" Multiplicity="1" />
+    <End Role="CourseGrade" Type="Self.CourseGrade" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Grade">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CourseGrade">
+        <PropertyRef Name="GradeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_StudentGrade">
+    <End Role="Grade" Type="Self.Grade" Multiplicity="1" />
+    <End Role="Student" Type="Self.Student" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Grade">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Student">
+        <PropertyRef Name="GradeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="SchoolModelStoreContainer">
+    <EntitySet Name="Course" EntityType="Self.Course" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CourseGrade" EntityType="Self.CourseGrade" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Grade" EntityType="Self.Grade" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="fk_CourseCourseGrade" Association="Self.fk_CourseCourseGrade">
+      <End Role="Course" EntitySet="Course" />
+      <End Role="CourseGrade" EntitySet="CourseGrade" />
+    </AssociationSet>
+    <AssociationSet Name="fk_GradeCourseGrade" Association="Self.fk_GradeCourseGrade">
+      <End Role="Grade" EntitySet="Grade" />
+      <End Role="CourseGrade" EntitySet="CourseGrade" />
+    </AssociationSet>
+    <AssociationSet Name="fk_StudentGrade" Association="Self.fk_StudentGrade">
+      <End Role="Grade" EntitySet="Grade" />
+      <End Role="Student" EntitySet="Student" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

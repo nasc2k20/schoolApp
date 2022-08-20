@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SchoolModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="SchoolEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Course" EntityType="SchoolModel.Course" />
+    <EntitySet Name="CourseGrade" EntityType="SchoolModel.CourseGrade" />
+    <EntitySet Name="Grade" EntityType="SchoolModel.Grade" />
+    <EntitySet Name="Student" EntityType="SchoolModel.Student" />
+    <AssociationSet Name="fk_CourseCourseGrade" Association="SchoolModel.fk_CourseCourseGrade">
+      <End Role="Course" EntitySet="Course" />
+      <End Role="CourseGrade" EntitySet="CourseGrade" />
+    </AssociationSet>
+    <AssociationSet Name="fk_GradeCourseGrade" Association="SchoolModel.fk_GradeCourseGrade">
+      <End Role="Grade" EntitySet="Grade" />
+      <End Role="CourseGrade" EntitySet="CourseGrade" />
+    </AssociationSet>
+    <AssociationSet Name="fk_StudentGrade" Association="SchoolModel.fk_StudentGrade">
+      <End Role="Grade" EntitySet="Grade" />
+      <End Role="Student" EntitySet="Student" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Course">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="CourseGrade" Relationship="SchoolModel.fk_CourseCourseGrade" FromRole="Course" ToRole="CourseGrade" />
+  </EntityType>
+  <EntityType Name="CourseGrade">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="GradeId" Type="Int32" Nullable="false" />
+    <Property Name="CourseId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Course" Relationship="SchoolModel.fk_CourseCourseGrade" FromRole="CourseGrade" ToRole="Course" />
+    <NavigationProperty Name="Grade" Relationship="SchoolModel.fk_GradeCourseGrade" FromRole="CourseGrade" ToRole="Grade" />
+  </EntityType>
+  <EntityType Name="Grade">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="CourseGrade" Relationship="SchoolModel.fk_GradeCourseGrade" FromRole="Grade" ToRole="CourseGrade" />
+    <NavigationProperty Name="Student" Relationship="SchoolModel.fk_StudentGrade" FromRole="Grade" ToRole="Student" />
+  </EntityType>
+  <EntityType Name="Student">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="StudentCode" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="false" />
+    <Property Name="BirthDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Gender" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="GradeId" Type="Int32" Nullable="false" />
+    <Property Name="Comments" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Grade" Relationship="SchoolModel.fk_StudentGrade" FromRole="Student" ToRole="Grade" />
+  </EntityType>
+  <Association Name="fk_CourseCourseGrade">
+    <End Type="SchoolModel.Course" Role="Course" Multiplicity="1" />
+    <End Type="SchoolModel.CourseGrade" Role="CourseGrade" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Course">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CourseGrade">
+        <PropertyRef Name="CourseId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_GradeCourseGrade">
+    <End Type="SchoolModel.Grade" Role="Grade" Multiplicity="1" />
+    <End Type="SchoolModel.CourseGrade" Role="CourseGrade" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Grade">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CourseGrade">
+        <PropertyRef Name="GradeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_StudentGrade">
+    <End Type="SchoolModel.Grade" Role="Grade" Multiplicity="1" />
+    <End Type="SchoolModel.Student" Role="Student" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Grade">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Student">
+        <PropertyRef Name="GradeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

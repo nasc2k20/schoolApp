@@ -1,0 +1,42 @@
+﻿@model schoolApp.Models.viewModels.courseGradeViewModel
+@{
+    ViewBag.Title = "Modificar Asignacion de Curso y Grado a Estudiante";
+    List<SelectListItem> itemsCbG = (List<SelectListItem>)ViewBag.itemsCbG;
+    List<SelectListItem> itemsCbC = (List<SelectListItem>)ViewBag.itemsCbC;
+}
+
+<div style="height: 2rem;"></div>
+<h2>@ViewBag.Title</h2>
+@using (Html.BeginForm("EditCourseGrade", "cursoGrado", FormMethod.Post))
+{
+    <div class="container">
+        <div class="row">
+            <div class="form-group col-lg-12">
+                @Html.LabelFor(d => d.GradeId)
+                @Html.DropDownListFor(d => d.GradeId, itemsCbG, "Seleccione un Grado", new { @class = "form-control" })
+                @Html.ValidationMessageFor(d => d.GradeId, null, new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-12">
+                @Html.LabelFor(d => d.CourseId)
+                @Html.DropDownListFor(d => d.CourseId, itemsCbC, "Seleccione un Curso", new { @class = "form-control" })
+                @Html.ValidationMessageFor(d => d.CourseId, null, new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-12" style="text-align:right;">
+                <a href="~/cursoGrado/" class="btn btn-warning btn-sm">
+                    <i class="fa-solid fa-xmark"></i>
+                    Cancelar
+                </a>
+                <button type="submit" class="btn btn-primary btn-sm">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    Guardar
+                </button>
+
+            </div>
+        </div>
+    </div>
+
+}

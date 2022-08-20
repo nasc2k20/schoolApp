@@ -1,0 +1,89 @@
+﻿@model schoolApp.Models.viewModels.studentsViewModel
+@{
+    ViewBag.Title = "Agregar Nuevo Estudiante";
+    List<SelectListItem> itemsCombo = (List<SelectListItem>)ViewBag.itemsCombo;
+}
+
+<div style="height: 2rem;"></div>
+<h2>@ViewBag.Title</h2>
+@using (Html.BeginForm("AddStudent", "estudiante", FormMethod.Post))
+{
+    <div class="container">
+        <div class="row">
+            <div class="form-group col-lg-12">
+                @Html.LabelFor(d => d.StudentCode)
+                @Html.TextBoxFor(d => d.StudentCode, "", new { @class = "form-control", @style = "text-transform:uppercase" })
+                @Html.ValidationMessageFor(d => d.StudentCode, null, new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-12">
+                @Html.LabelFor(d => d.Name)
+                @Html.TextBoxFor(d => d.Name, "", new { @class = "form-control", @style = "text-transform:uppercase" })
+                @Html.ValidationMessageFor(d => d.Name, null, new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-12">
+                @Html.LabelFor(d => d.BirthDate)
+                @Html.TextBoxFor(d => d.BirthDate, "", new { @id = "datepickertxt", @class = "form-control" })
+                @Html.ValidationMessageFor(d => d.BirthDate, null, new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-12">
+                @Html.LabelFor(d => d.Gender)
+                @Html.TextBoxFor(d => d.Gender, "", new { @class = "form-control", @style = "text-transform:uppercase" })
+                @Html.ValidationMessageFor(d => d.Gender, null, new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-12">
+                @Html.LabelFor(d => d.Comments)
+                @Html.TextBoxFor(d => d.Comments, "", new { @class = "form-control", @style = "text-transform:uppercase" })
+                @Html.ValidationMessageFor(d => d.Comments, null, new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-12">
+                @Html.LabelFor(d => d.GradeId)
+                @Html.DropDownListFor(d => d.GradeId, itemsCombo, "Seleccione un Grado", new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-12" style="text-align:right;">
+                <a href="~/grado/" class="btn btn-warning btn-sm">
+                    <i class="fa-solid fa-xmark"></i>
+                    Cancelar
+                </a>
+                <button type="submit" class="btn btn-primary btn-sm">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    Guardar
+                </button>
+
+            </div>
+        </div>
+    </div>
+
+}
+<link href="~/Content/daterangepicker.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script src="~/Scripts/moment.js"></script>
+<script src="~/Scripts/moment-with-locales.js"></script>
+<script src="~/Scripts/daterangepicker.js"></script>
+<script>
+    $(function () {
+        $('#datepickertxt').daterangepicker({
+            autoApply: true,
+            singleDatePicker: true,
+            timePicker: true,
+            timePicker24Hour: true,
+            maxDate: moment().endOf("day"),
+            startDate: moment().startOf('hour'),
+            endDate: moment().startOf('hour').add(32, 'hour'),
+            locale: {
+                format: 'YYYY-MM-DD HH:MM:SS'
+            }
+        });
+    });
+</script>

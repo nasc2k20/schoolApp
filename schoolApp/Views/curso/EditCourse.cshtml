@@ -1,0 +1,34 @@
+﻿@model schoolApp.Models.viewModels.coursesViewModel
+@{
+    ViewBag.Title = "Modificar Curso";
+}
+
+<div style="height: 2rem;"></div>
+<h2>@ViewBag.Title</h2>
+@using (Html.BeginForm("EditCourse", "curso", FormMethod.Post))
+{
+    <div class="container">
+        <div class="row">
+            @Html.HiddenFor(d=>d.Id)
+            <div class="form-group col-lg-12">
+                @Html.LabelFor(d => d.Name)
+                @Html.TextBoxFor(d => d.Name, "", new { @class = "form-control", @style = "text-transform:uppercase" })
+                @Html.ValidationMessageFor(d => d.Name, null, new { @class = "danger" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-12" style="text-align:right;">
+                <a href="~/curso/" class="btn btn-warning btn-sm">
+                    <i class="fa-solid fa-xmark"></i>
+                    Cancelar
+                </a>
+                <button type="submit" class="btn btn-primary btn-sm">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    Modificar
+                </button>
+
+            </div>
+        </div>
+    </div>
+
+}

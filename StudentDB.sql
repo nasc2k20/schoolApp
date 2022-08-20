@@ -1,0 +1,46 @@
+CREATE DATABASE School;
+
+Use School;
+
+CREATE TABLE Student(
+	Id INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+	StudentCode VARCHAR(100) NOT NULL,
+	Name VARCHAR(300) NOT NULL,
+	BirthDate DATETIME NOT NULL,
+	Gender VARCHAR(100) NOT NULL,
+	GradeId INT NOT NULL,
+	Comments VARCHAR (300),
+);
+
+CREATE TABLE Course(
+	Id INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+	Name VARCHAR(100)
+);
+
+CREATE TABLE Grade(
+	Id INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+	Name VARCHAR(100)
+);
+
+CREATE TABLE CourseGrade(
+	Id INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+	GradeId INT NOT NULL,
+	CourseId INT NOT NULL
+);
+
+ALTER TABLE Student ADD CONSTRAINT fk_StudentGrade FOREIGN KEY (GradeId) REFERENCES Grade (Id);
+ALTER TABLE CourseGrade ADD CONSTRAINT fk_GradeCourseGrade FOREIGN KEY (GradeId) REFERENCES Grade (Id);
+ALTER TABLE CourseGrade ADD CONSTRAINT fk_CourseCourseGrade FOREIGN KEY (CourseId) REFERENCES Course (Id);
+
+
+SELECT * FROM Grade;
+SELECT * FROM Course;
+SELECT * FROM Student;
+SELECT * FROM CourseGrade;
+
+
+SELECT * FROM CourseGrade a
+INNER JOIN Course b ON b.Id = a.CourseId
+INNER JOIN Grade c ON c.Id = a.GradeId
+INNER JOIN Student d ON d.GradeId = c.Id
+WHERE d.Id = 3
