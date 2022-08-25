@@ -11,28 +11,56 @@ namespace schoolApp.Controllers
     public class cursoGradoController : Controller
     {
         // GET: cursoGrado
-        public ActionResult Index()
+        [HttpGet]
+        public ActionResult Index(int? idStudent)
         {
             List<listaCourseGradeViewModel> assingnations;
 
-            using (SchoolEntities cnn = new SchoolEntities())
-            {                
-                assingnations = (from csGd in cnn.CourseGrade
-                                 join cs in cnn.Course on csGd.CourseId equals cs.Id
-                                 join gd in cnn.Grade on csGd.GradeId equals gd.Id
-                                 join st in cnn.Student on gd.Id equals st.GradeId
-                                 select new listaCourseGradeViewModel
-                                 {
-                                     Id = csGd.Id,
-                                     CourseId = csGd.CourseId,
-                                     GradeId = csGd.GradeId,
-                                     idGrade = gd.Id,
-                                     nameGrade = gd.Name,
-                                     idCourse = cs.Id,
-                                     nameCourse = cs.Name,
-                                     nameStudent = st.Name
-                                 }).ToList();
+            if (idStudent > 0)
+            {
+                using (SchoolEntities cnn = new SchoolEntities())
+                {
+                    assingnations = (from csGd in cnn.CourseGrade
+                                     join cs in cnn.Course on csGd.CourseId equals cs.Id
+                                     join gd in cnn.Grade on csGd.GradeId equals gd.Id
+                                     join st in cnn.Student on gd.Id equals st.GradeId
+                                     where st.Id == idStudent
+                                     select new listaCourseGradeViewModel
+                                     {
+                                         Id = csGd.Id,
+                                         CourseId = csGd.CourseId,
+                                         GradeId = csGd.GradeId,
+                                         idGrade = gd.Id,
+                                         nameGrade = gd.Name,
+                                         idCourse = cs.Id,
+                                         nameCourse = cs.Name,
+                                         nameStudent = st.Name
+                                     }).ToList();
+                }
             }
+            else
+            {
+                using (SchoolEntities cnn = new SchoolEntities())
+                {
+                    assingnations = (from csGd in cnn.CourseGrade
+                                     join cs in cnn.Course on csGd.CourseId equals cs.Id
+                                     join gd in cnn.Grade on csGd.GradeId equals gd.Id
+                                     join st in cnn.Student on gd.Id equals st.GradeId
+                                     select new listaCourseGradeViewModel
+                                     {
+                                         Id = csGd.Id,
+                                         CourseId = csGd.CourseId,
+                                         GradeId = csGd.GradeId,
+                                         idGrade = gd.Id,
+                                         nameGrade = gd.Name,
+                                         idCourse = cs.Id,
+                                         nameCourse = cs.Name,
+                                         nameStudent = st.Name
+                                     }).ToList();
+                }
+            }
+
+            
 
 
             List<listaCourseGradeViewModel> comboEstudiante = null;
@@ -58,6 +86,7 @@ namespace schoolApp.Controllers
 
             return View(assingnations);
         }
+        /*
         [HttpPost]
         public ActionResult Index(int? idStudent)
         {
@@ -107,6 +136,7 @@ namespace schoolApp.Controllers
 
             return View(assingnations);
         }
+        */
 
         public ActionResult AddCourseGrade()
         {

@@ -9,83 +9,92 @@
 
 <h2>@ViewBag.Title</h2>
 
-<div class="container">
-    <div class="d-flex bd-highlight">
-        <div class="p-2 w-100 bd-highlight">
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-                        @using (Html.BeginForm("Index", "cursoGrado", FormMethod.Post, new {@id="cursoGradoFrm"}))
-                        {
-                            @Html.DropDownList("comboEstudiantes", itemsCbEst, "SELECCIONE UN ESTUDIANTE", new { @class = "form-control", @id = "estudianteCb" })
-                        }
+@using (Html.BeginForm("Index", "cursoGrado", FormMethod.Post, new {@id="frmIndexCG"}))
+    {
+        <div class="container">
+            <div class="d-flex bd-highlight">
+                <div class="p-2 w-100 bd-highlight">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                                @Html.DropDownList("comboEstudiantes", itemsCbEst, "SELECCIONE UN ESTUDIANTE", new { @class = "form-control", @id = "idStudent" })
+                            </div>
+                        </div>
                     </div>
                 </div>
+                <div class="d-flex flex-row-reverse bd-highlight">
+                    <div class="p-2 bd-highlight"><a href="~/cursoGrado/AddCourseGrade" class="btn btn-success btn-sm"><i class="fa-solid fa-square-plus"></i></a></div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <table class="table table-sm table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col" width="5%">#</th>
+                            <th scope="col" width="45%">Nombre del Estudiante</th>
+                            <th scope="col" width="20%">Nombre del Curso</th>
+                            <th scope="col" width="20%">Nombre del Grado</th>
+                            <th scope="col" width="10%" colspan="2">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int i = 1;
+
+                            foreach (var dCursoGrado in Model)
+                            {
+                                <tr>
+                                    <td>@i</td>
+                                    <td>@dCursoGrado.nameStudent</td>
+                                    <td>@dCursoGrado.nameCourse</td>
+                                    <td>@dCursoGrado.nameGrade</td>
+                                    <td><a class="btn btn-primary btn-sm" href="~/cursoGrado/EditCourseGrade/@dCursoGrado.Id"><i class="fa-solid fa-pen"></i></a></td>
+                                    <td><a class="btn btn-danger btn-sm" id="btnDelete" onclick="Alerta(@dCursoGrado.Id)" href="#"><i class="fa-solid fa-trash"></i></a></td>
+                                </tr>
+                                i++;
+                            }
+                        }
+                    </tbody>
+                </table>
             </div>
         </div>
-        <div class="d-flex flex-row-reverse bd-highlight">
-            <div class="p-2 bd-highlight"><a href="~/cursoGrado/AddCourseGrade" class="btn btn-success btn-sm"><i class="fa-solid fa-square-plus"></i></a></div>
-        </div>
-    </div>
-
-
-    <div class="row">
-        <table class="table table-sm table-hover">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col" width="5%">#</th>
-                    <th scope="col" width="45%">Nombre del Estudiante</th>
-                    <th scope="col" width="20%">Nombre del Curso</th>
-                    <th scope="col" width="20%">Nombre del Grado</th>
-                    <th scope="col" width="10%" colspan="2">Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @{
-                    int i = 1;
-
-                    foreach (var dCursoGrado in Model)
-                    {
-                        <tr>
-                            <td>@i</td>
-                            <td>@dCursoGrado.nameStudent</td>
-                            <td>@dCursoGrado.nameCourse</td>
-                            <td>@dCursoGrado.nameGrade</td>
-                            <td><a class="btn btn-primary btn-sm" href="~/cursoGrado/EditCourseGrade/@dCursoGrado.Id"><i class="fa-solid fa-pen"></i></a></td>
-                            <td><a class="btn btn-danger btn-sm" id="btnDelete" onclick="Alerta(@dCursoGrado.Id)" href="#"><i class="fa-solid fa-trash"></i></a></td>
-                        </tr>
-                        i++;
-                    }
-                }
-            </tbody>
-        </table>
-    </div>
-</div>
-<script src="~/Scripts/jquery-3.4.1.min.js"></script>
-<script>
-
-    $(function () {
-        $('#estudianteCb').on('change', function () {
-            console.log($(this).val());
-        });
-    });
-
-    function Alerta(id) {
-        Swal.fire({
-            title: '¿Estas seguro de Eliminar la Asignacion?',
-            text: "Este proceso es irreversible, asegurate de que es el registro que deseas borrar",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Confirmar'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = "DeleteCourseGrade/" + id;
-            }
-            else {
-                Swal.fire('No se ha realizado ningun cambio', '', 'info')
-            }
-        })
     }
-</script>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script>
+        /*
+        const idStudent = document.getElementById('idStudent');
+        idStudent.addEventListener('change', function () {
+            window.location.href = "/cursoGrado/Index?idStudent=" + idStudent.value;
+            idStudent.value = this.value;
+        });
+        */
+
+        $('#idStudent').on('change', function () {
+            var option = $(this).find('option:selected').val();
+
+            window.location.href = "/cursoGrado/Index?idStudent=" + $(this).val();
+
+
+        });
+
+        function Alerta(id) {
+            Swal.fire({
+                title: '¿Estas seguro de Eliminar la Asignacion?',
+                text: "Este proceso es irreversible, asegurate de que es el registro que deseas borrar",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Confirmar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "DeleteCourseGrade/" + id;
+                }
+                else {
+                    Swal.fire('No se ha realizado ningun cambio', '', 'info')
+                }
+            })
+        }
+    </script>
